@@ -1,0 +1,8 @@
+.Header {
+    flex: 1
+    justify-content: center
+}
+
+h1 {
+    color: gray
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "안동시",
+    "englishName": "Andong-si",
+    "landmarks": ["Hahoe Folk Village", "Imcheonggak", "봉정사 극락전"],
+    "description": "city on the Nakdong River, in South Korea. It’s known for its open-air heritage museums. Andong Folk Museum uses exhibits and re-enactments to explain traditional ceremonies like weddings. Its outdoor area has thatched houses and a pair of carved totem poles. West of the city, Hahoe Folk Village has tile-roofed homes and traditional food. Nearby, Buyongdae Cliff has expansive river views."
+  },
+  {
+    "name": "안산시",
+    "englishName": "Ansan-si",
+    "landmarks": ["Badahyanggi Arboretum", "Sihwa Narae Rest Area"],
+    "description": "city in Gyeonggi Province, South Korea. It lies southwest of Seoul and is part of the Seoul National Capital Area. It is connected to Seoul by rail via Seoul Subway Line 4. It is situated on the Yellow Sea coast and some islands lie within its jurisdiction."
+  },
+  {
+    "name": "안성시",
+    "englishName": "Anseong-si",
+    "landmarks": ["미리내 성지 美里川聖堂", "아쿠아필드 안성", "서운산 자연휴양림"],
+    "description": "city in Gyeonggi Province, South Korea, 80 kilometres south of Seoul. Its geographical location is 37°0′N 127°16′E. Anseong promotes itself as \"The City of Masters\". It is known for producing brassware and arts and crafts. From late spring to fall, Anseong holds its own Namsadang Neuri Festival."
+  },
+  {
+    "name": "서울",
+    "englishName": "Seoul",
+    "landmarks": ["Gyeongbokgung Palace", "N _____ Tower", "서운산 자연휴양림", "Bukchon Hanok Village"],
+    "description": "the capital of South Korea, is a huge metropolis where modern skyscrapers, high-tech subways and pop culture meet Buddhist temples, palaces and street markets. Notable attractions include futuristic Dongdaemun Design Plaza, a convention hall with curving architecture and a rooftop park; Gyeongbokgung Palace, which once had more than 7,000 rooms; and Jogyesa Temple, site of ancient locust and pine trees."
+  },
+  {
+    "name": "부산",
+    "englishName": "Busan",
+    "landmarks": ["Haedong Yonggungsa Temple", "Beomeosa", "Gamcheon Culture Village"],
+    "description": "a large port city in South Korea, is known for its beaches, mountains and temples. Busy Haeundae Beach features the Sea Life Aquarium, plus a Folk Square with traditional games such as tug-of-war, while Gwangalli Beach has many bars and views of modern Diamond Bridge. Beomeosa Temple, a Buddhist shrine founded in 678 A.D., is at the base of Geumjeong Mountain, which has hiking trails."
+  },
+  {
+    "name": "인천",
+    "englishName": "Incheon",
+    "landmarks": ["Grand Park", "Songdo Central Park", "Hyundai Premium Outlet, Songdo"],
+    "description": "a South Korean city bordering the capital of Seoul, has long been a transportation hub. The ultramodern, massive Incheon International Airport, with railway connections to Seoul, features a casino, spa and golf course. Yeonan Pier, close to the popular Incheon Fish Market, is the starting point for many boat tours. Incheon is also known for its beach-lined islands, including Yeongjong and Muui-dong."
+  },
+  {
+    "name": "동두천시",
+    "englishName": "Dongducheon-si",
+    "landmarks": ["놀자숲", "Wonhyopokpo", "Chilbongsan"],
+    "description": "city in Gyeonggi Province, South Korea. The city, to the north of Seoul, is strategically important for the defense of the Korean capital. The main camps of the United States Second Infantry Division are in the city, and the division command is at Uijeongbu."
+  },
+  {
+    "name": "오산시",
+    "englishName": "Osan",
+    "landmarks": ["Semadae", "죽미체육공원", "Bird Park"],
+    "description": "city in Gyeonggi Province, South Korea, approximately 35 km south of Seoul. The population of the city is around 200,000. The local economy is supported by a mix of agricultural and industrial enterprises."
+  }
+]
