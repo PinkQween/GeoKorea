@@ -7,22 +7,10 @@ import webbrowser
 import os
 import random
 import math
-import wx
-import wx.lib.iewin as iewin
+import webview
+from tkinter import *
 from time import sleep
 from subprocess import call
-
-class MyWebApp(wx.Frame):
-    def __init__(self, *args, **kw):
-        super(MyWebApp, self).__init__(*args, **kw)
-
-        self.browser = iewin.IEHtmlWindow(self)
-        self.browser.Navigate("https://example.com")
-
-        self.Bind(wx.EVT_CLOSE, self.on_close)
-
-    def on_close(self, event):
-        self.Destroy()
 
 class GeoKorea:
     def __init__(self):
@@ -277,10 +265,16 @@ class GeoKorea:
             sleep(3)
 
     def desktopApp(self):
-        app = wx.App(False)
-        frame = MyWebApp(None, wx.ID_ANY, "GeoKorea Desktop App", size=(800, 600))
-        frame.Show()
-        app.MainLoop()
+        tk = Tk()
+
+        tk.geometry("800x450")
+
+        if self.selected_language == "English":
+            webview.create_window('GeoKorea!', 'https://pinkqween.github.io/GeoKorea/')
+        else:
+            webview.create_window('GeoKorea!', 'https://pinkqween.github.io/GeoKorea/kr')
+
+        webview.start()
 
 if __name__ == "__main__":
     game = GeoKorea()
