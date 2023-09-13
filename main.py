@@ -1,344 +1,288 @@
+import curses
+import random
+import json
+import http.server
+import socketserver
+import webbrowser
 import os
 import random
 import math
-import time
-import json
-import sys
-import subprocess
-import keyboard
+import wx
+import wx.lib.iewin as iewin
 from time import sleep
+from subprocess import call
 
-# try:
-#     # from tabulate import tabulate
-#     from pynput.keyboard import Key, Listener, KeyCode
-#     from tkinter import *
-#     from tkinter import ttk
-#     from flask import Flask, render_template
-# except:
-#     # implement pip as a subprocess:
-#     # subprocess.check_call([sys.executable, '-m', 'pip', 'install',
-#     # 'tabulate'])
-#     # subprocess.check_call([sys.executable, '-m', 'pip', 'install',
-#     # 'tkinter'])
-#     subprocess.check_call([sys.executable, '-m', 'pip', 'install',
-#     'flask'])
-#     subprocess.check_call([sys.executable, '-m', 'pip', 'install',
-#     'pynput'])
-#     from tabulate import tabulate
-#     from tkinter import *
-#     from tkinter import ttk
-#     from pynput.keyboard import Key, Listener, KeyCode
-#     from flask import Flask, render_template
+class MyWebApp(wx.Frame):
+    def __init__(self, *args, **kw):
+        super(MyWebApp, self).__init__(*args, **kw)
 
-def newInput(inputString):
-    keyboard.unhook_all()
-    return input(inputString)
+        self.browser = iewin.IEHtmlWindow(self)
+        self.browser.Navigate("https://example.com")
 
-def restart():
-    # print("Here is the korean alphabet (Hangul) to help you out\n")
+        self.Bind(wx.EVT_CLOSE, self.on_close)
 
-    # print(tabulate(Hangul, headers=head, tablefmt="grid"))
+    def on_close(self, event):
+        self.Destroy()
 
-    city = koreanCitiesObject[math.floor(random.random() * len(koreanCities))]
+class GeoKorea:
+    def __init__(self):
+        self.selected_language = None
+        self.selected_interface = None
+        self.options = {
+            "language": ["English", "한국인"],
+            "interface": ["Web", "Terminal Emulator", "Desktop App"],
+            "interfaceKR": ["웹", "터미널 에뮬레이터", "데스크톱 앱"]
+        }
+        self.koreanCities = []
 
-    # print(city)
-    #
-    # print(math.floor(random.random() * len(koreanCities)))
-
-    random2 = math.floor(random.random() * 4)
-
-    if random2 == 0:
-        print("One of the characters in the cities name is", city["name"][math.floor(random.random() * len(city["name"]))])
-    elif random2 == 1:
-        print("One of the characters in my english name is", city["englishName"][math.floor(random.random() * len(city["englishName"]))])
-    elif random2 == 2:
-        print("One of my landmarks is", city["landmarks"][math.floor(random.random() * len(city["landmarks"]))])
-    elif random2 == 3:
-        print("The description for me is", city["description"])
-    else:
-        exit(1)
-
-    guess = newInput("What city am I?: ")
-
-    submit(guess, city)
-
-def submit(guess, city):
-    if guess == city["name"] or guess.lower().capitalize() == city["englishName"]:
-        print("Good job that's correct!!!")
-        playAgain = newInput("Would you like to play again? (Y/n): ")
-
-        if playAgain.lower().capitalize() == 'N' or playAgain.lower().capitalize() == 'No':
-            exit(0)
-        else:
-            restart()
-    else:
-        print(".")
-        time.sleep(1)
-        print("..")
-        time.sleep(1)
-        print("...")
-        time.sleep(1)
-
-
-        random2 = math.floor(random.random() * 4)
-
-        if random2 == 0:
-            print("Unfortunately that is incorrect, one of the characters in the cities name is",
-                  city["name"][math.floor(random.random() * len(city["name"]))])
-        elif random2 == 1:
-            print("Unfortunately that is incorrect, one of the characters in my english name is",
-                  city["englishName"][math.floor(random.random() * len(city["englishName"]))])
-        elif random2 == 2:
-            print("Unfortunately that is incorrect, one of my landmarks is", city["landmarks"][math.floor(random.random() * len(city["landmarks"]))])
-        elif random2 == 3:
-            print("Unfortunately that is incorrect, the description for me is", city["description"])
-        else:
-            exit(1)
-
-        guess = newInput("What city am I?: ")
-
-        submit(guess, city)
-
-
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-def display_menu(options, selected_index, header):
-    highlight_code = "\033[48;2;128;128;128m"
-    reset_code = "\033[0m"
-    clear_screen()
-    print(header)
-    for i, option in enumerate(options):
-        if i == selected_index:
-            print(f"{highlight_code}{option}{reset_code}")
-        else:
-            print(f"{option}")
-
-options = ["English", "한국인"]
-selected_index = 0
-header = "Select language (언어 선택):"
-
-display_menu(options, selected_index, header)
-
-while True:
-    if keyboard.is_pressed('down'):
-        selected_index = (selected_index + 1) % len(options)
-        display_menu(options, selected_index, header)
-        time.sleep(0.2)
-    elif keyboard.is_pressed('up'):
-        selected_index = (selected_index - 1) % len(options)
-        display_menu(options, selected_index, header)
-        time.sleep(0.2)
-    elif keyboard.is_pressed('enter'):
-        selected_language = options[selected_index]
-        clear_screen()
-        break
-
-if selected_language == "English":
-    file = open("korea.json")
-else:
-    file = open("korea.kr.json")
-
-koreanCitiesObject = json.load(file)
-file.close()
-
-koreanCities = []
-
-for i in koreanCitiesObject:
-    koreanCities.append(i["name"])
-
-
-# Hangul = [["ㄱ", "ㅏ", "ㄲ", "ㅢ"], ["ㄴ", "ㅑ", "ㄲ", "ㅚ"]]
-
-# Hangul = [["test", "test1", "test2", "test0"]]
-
-head = ["consonants", "vowels", "tense consonants", "complex vowels"]
-
-os.system("echo $USER >> user.txt")
-
-file = open("./user.txt")
-
-user = file.readline().replace("\n", "")
-
-file.close()
-
-
-os.system("rm -f user.txt")
-
-sleep(0.1)
-
-# if (selected_language == "English"):
-#     print("Hello,", user + ", this is a guessing game where you need to guess the korean city!\n")
-#     web = newInput"Would you like to play on the web? (y/N): ")
-# else:
-#     print("안녕하세요,", user + ", 이것은 한국의 도시를 추측해야 하는 추측 게임입니다!\n")
-#     web = newInput"웹에서 게임을 하시겠습니까? (y/N): ")
-
-if selected_language == "English":
-    options = ["Web", "Terminal Emulator"]
-    header = "Were would you like to play?:"
-else:
-    options = ["웹", "터미널 에뮬레이터"]
-    header = "어디서 플레이하고 싶으세요?:"
-
-selected_index = 0
-
-display_menu(options, selected_index, header)
-
-while True:
-    if keyboard.is_pressed('down'):
-        selected_index = (selected_index + 1) % len(options)
-        display_menu(options, selected_index, header)
-        time.sleep(0.2)
-    elif keyboard.is_pressed('up'):
-        selected_index = (selected_index - 1) % len(options)
-        display_menu(options, selected_index, header)
-        time.sleep(0.2)
-    elif keyboard.is_pressed('enter'):
-        selected_interface = options[selected_index]
-        clear_screen()
-        break
-
-
-if selected_interface == "Web" or "웹":
-    import wsgiref.simple_server
-    import urllib.parse
-
-    forms_data = []  # all submissions
-
-    import webbrowser
-
-    def application(environ, start_response):
-        try:
-            from fontTools.ttLib import TTFont
-        except:
-            subprocess.check_call([sys.executable, '-m', 'pip', 'install',
-    'fontTools'])
-            from fontTools.ttLib import TTFont
-
-        font = TTFont('./BagelFatOne-Regular.ttf')
-
-
-        # requested path
-        path = environ["PATH_INFO"]
-        # requested method
-        method = environ["REQUEST_METHOD"]
-
-        # content type of response
-        content_type = "text/html"
-
-        if path == "/":
-            if method == "POST":
-                # getting wsgi.input obj
-                input_obj = environ["wsgi.input"]
-                # length of body
-                input_length = int(environ["CONTENT_LENGTH"])
-                # getting body of wsgi.input obj
-                # decoding to string
-                body = input_obj.read(input_length).decode()
-
-                # parsing body of form
-                data = urllib.parse.parse_qs(body, keep_blank_values=True)
-                # data of body in format
-                req = {
-                    "name": data["name"][0],
-                    "email": data["email"][0],
-                    "type": data["f-type"][0],
-                    "content": data["feedback"][0]
-                }
-                # adding to submission
-                forms_data.append(req)
-
-                response = b"Your feedback submitted successfully."
-                status = "200 OK"
+    def display_menu(self, stdscr, options, selected_index, header):
+        stdscr.clear()
+        stdscr.addstr(0, 0, header, curses.A_UNDERLINE)
+        for i, option in enumerate(options):
+            if i == selected_index:
+                stdscr.addstr(i + 1, 0, f"> {option}", curses.A_BOLD)
             else:
-                # reading html file
-                with open("index.html", "r") as f:
-                    response = f.read().encode()
-                status = "200 OK"
-        if path == "/kr":
-            if method == "POST":
-                # getting wsgi.input obj
-                input_obj = environ["wsgi.input"]
-                # length of body
-                input_length = int(environ["CONTENT_LENGTH"])
-                # getting body of wsgi.input obj
-                # decoding to string
-                body = input_obj.read(input_length).decode()
+                stdscr.addstr(i + 1, 0, f"  {option}")
+        stdscr.refresh()
 
-                # parsing body of form
-                data = urllib.parse.parse_qs(body, keep_blank_values=True)
-                # data of body in format
-                req = {
-                    "name": data["name"][0],
-                    "email": data["email"][0],
-                    "type": data["f-type"][0],
-                    "content": data["feedback"][0]
-                }
-                # adding to submission
-                forms_data.append(req)
+    def run(self, stdscr):
+        curses.curs_set(0)  # Hide the cursor
+        curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
-                response = b"Your feedback submitted successfully."
-                status = "200 OK"
+        selected_index = 0
+        menu_type = "language"
+
+        while True:
+            if menu_type == "language":
+                options = self.options["language"]
+                header = "Select language (언어 선택):"
             else:
-                # reading html file
-                with open("index.kr.html", "r") as f:
-                    response = f.read().encode()
-                status = "200 OK"
+                if self.selected_language == "English":
+                    options = self.options["interface"]
+                    header = "Where would you like to play?:"
+                else:
+                    options = self.options["interfaceKR"]
+                    header = "어디서 플레이하고 싶으세요?:"
 
-        elif path == '/korea.json':
-            with open("korea.json", "r") as f:
-                response = f.read().encode()
-            status = "200 OK"
+            self.display_menu(stdscr, options, selected_index, header)
+            stdscr.refresh()
 
-        elif path == '/index.js':
-            with open("index.txt", "r") as f:
-                response = f.read().encode()
-            status = "200 OK"
+            key = stdscr.getch()
 
-        elif path == '/BagelFatOne-Regular.ttf':
-            with TTFont('./BagelFatOne-Regular.ttf') as f:
-                print(f)
-            status = "200 OK"
+            if key == curses.KEY_DOWN or key == curses.KEY_RIGHT:
+                selected_index = (selected_index + 1) % len(options)
+            elif key == curses.KEY_UP or key == curses.KEY_LEFT:
+                selected_index = (selected_index - 1) % len(options)
+            elif key == curses.KEY_ENTER or key in [10, 13]:
+                if menu_type == "language":
+                    self.selected_language = options[selected_index]
+                    if self.selected_language == "English":
+                        menu_type = "interface"
+                    else:
+                        menu_type = "interfaceKR"
 
-        elif path == "/forms":
-            # if /forms path
-            # converting to JSON data
-            response = json.dumps(forms_data).encode()
-            status = "200 OK"
-            # changing content-type
-            content_type = "application/json"
+                    selected_index = 0
+                else:
+                    self.selected_interface = options[selected_index]
+                    break
 
+        stdscr.clear()
+        stdscr.refresh()
+
+        if self.selected_language == "English":
+            filename = "korea.json"
         else:
-            if selected_language == "English":
-                # 404 - path not found
-                response = b"<h1>Not found</h1><p>Entered path not found</p>"
-                status = "404 Not Found"
+            filename = "korea.kr.json"
+
+        with open(filename, "r") as file:
+            korean_cities_object = json.load(file)
+
+        for i in korean_cities_object:
+            self.koreanCities.append(i["name"])
+
+        return korean_cities_object
+
+    def handle_selection(self, korean_cities_object):
+        if self.selected_interface == "Web" or self.selected_interface == "웹":
+            self.start_web_app()
+        elif self.selected_interface == "Desktop App" or self.selected_interface == "데스크톱 앱":
+            self.desktopApp()
+        else:
+            self.play_game(korean_cities_object)
+
+    def play_game(self, korean_cities_object):
+        call('clear' if os.name == 'posix' else 'cls')
+
+        city = korean_cities_object[math.floor(random.random() * len(self.koreanCities))]
+
+        random2 = random.randint(0, 3)
+
+        if self.selected_language == "English":
+            if random2 == 0:
+                print("One of the characters in the city's name is " + random.choice(city["name"]))
+            elif random2 == 1:
+                print("One of the characters in my English name is " + random.choice(city["englishName"]))
+            elif random2 == 2:
+                print("One of my landmarks is " + random.choice(city["landmarks"]))
+            elif random2 == 3:
+                print("The description for me is " + city["description"])
+            # else:
+                # exit(1)
+        else:
+            if random2 == 0:
+                print("도시 이름 중 하나에 들어 있는 문자는 " + random.choice(city["name"]))
+            elif random2 == 1:
+                print("내 영어 이름에 들어 있는 문자 중 하나는 " + random.choice(city["englishName"]))
+            elif random2 == 2:
+                print("내 랜드마크 중 하나는 " + random.choice(city["landmarks"]))
+            elif random2 == 3:
+                print("내 대한 설명은 " + city["description"])
+            # else:
+                # exit(1)
+
+        if self.selected_language == "English":
+            guess = input("What city am I?: ")
+            self.submit(guess, city, korean_cities_object)
+        else:
+            guess = input("나는 어떤 도시인가?: ")
+            self.submit(guess, city, korean_cities_object)
+
+    def submit(self, guess, city, korean_cities_object):
+        if guess == city["name"] or guess.lower().capitalize() == city["englishName"] or guess == city["name"] + city["type"]:
+            if self.selected_language == "English":
+                print("Good job that's correct!!!")
+                again = "Would you like to play again? (Y/n): "
             else:
-                response = "<h1>찾을 수 없음</h1><p>입력한 경로를 찾을 수 없습니다</p>"
-                status = "404 Not Found"
+                print("잘 했어요! 정답입니다!!!")
+                again = "다시 플레이하시겠습니까? (예/아니요, 기본은 '예'입니다): "
+            
+            play_again = input(again)
 
-        # response headers
-        headers = [
-            ("Content-Type", content_type),
-            ("Content-Length", str(len(response)))
-        ]
+            if play_again.lower().capitalize() == 'N' or play_again.lower().capitalize() == 'No' or play_again.lower().capitalize() == "아니요":
+                exit(0)
+            else:
+                self.play_game(korean_cities_object)
+        else:
+            if self.selected_language == "English":
+                print(".")
+                sleep(1)
+                print("..")
+                sleep(1)
+                print("...")
+                sleep(1)
+            else:
+                print(".")
+                sleep(1)
+                print("..")
+                sleep(1)
+                print("...")
+                sleep(1)
 
-        start_response(status, headers)
-        return [response]
-    
-    
-    if selected_language == "English":
-        webbrowser.open('http://127.0.0.1:8000')
-    else:
-        webbrowser.open('http://127.0.0.1:8000/kr')
+            random2 = random.randint(0, 3)
+            if self.selected_language == "English":
+                if random2 == 0:
+                    print("Unfortunately that is incorrect, one of the characters in the city's name is " + random.choice(city["name"]))
+                elif random2 == 1:
+                    print("Unfortunately that is incorrect, one of the characters in my English name is " + random.choice(city["englishName"]))
+                elif random2 == 2:
+                    print("Unfortunately that is incorrect, one of my landmarks is " + random.choice(city["landmarks"]))
+                elif random2 == 3:
+                    print("Unfortunately that is incorrect, the description for me is " + city["description"])
+                # else:
+                    # exit(1)
+            else:
+                if random2 == 0:
+                    print("아쉽게도 정답이 아닙니다. 도시 이름 중 하나에 들어 있는 문자는 " + random.choice(city["name"]))
+                elif random2 == 1:
+                    print("아쉽게도 정답이 아닙니다. 내 영어 이름에 들어 있는 문자 중 하나는 " + random.choice(city["englishName"]))
+                elif random2 == 2:
+                    print("아쉽게도 정답이 아닙니다. 내 랜드마크 중 하나는 " + random.choice(city["landmarks"]))
+                elif random2 == 3:
+                    print("아쉽게도 정답이 아닙니다. 내 대한 설명은 " + city["description"])
+                # else:
+                    # exit(1)
 
-    if __name__ == "__main__":
-        w_s = wsgiref.simple_server.make_server(
-            host="localhost",
-            port=8000,
-            app=application
-        )
-        w_s.serve_forever()
-else:
-    restart()
+            if self.selected_language == "English":
+                guess = input("What city am I?: ")
+            else:
+                guess = input("나는 어떤 도시인가?: ")
+            
+            self.submit(guess, city, korean_cities_object)
+
+    def start_web_app(self):
+        class GeoKoreaHandler(http.server.SimpleHTTPRequestHandler):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, directory="www", **kwargs)
+
+        # Initialize the port and address
+        port = 8000
+        address = "localhost"
+
+        if self.selected_language == "English":
+            loading_messages = [
+                "Starting web app...",
+                "Please wait...",
+                "Loading...",
+            ]
+        else:
+            loading_messages = [
+                "웹 앱 시작 중...",
+                "잠시만 기다려주세요...",
+                "로딩 중...",
+            ]
+
+        loading_index = 0
+
+        while True:
+            try:
+                # Attempt to start the web app on the current port
+                with socketserver.TCPServer((address, port), GeoKoreaHandler) as httpd:
+                    if self.selected_language == "English":
+                        call('clear' if os.name == 'posix' else 'cls')
+                        print(f"Server started at http://{address}:{port}")
+                        webbrowser.open(f"http://{address}:{port}")
+                    else:
+                        call('clear' if os.name == 'posix' else 'cls')
+                        print(f"서버가 다음 주소에서 시작되었습니다: http://{address}:{port}")
+                        webbrowser.open(f"http://{address}:{port}/kr")
+
+                    httpd.serve_forever()
+            except OSError as e:
+                # If the port is already in use, try the next port
+                if e.errno == 48:  # Error code for "Address already in use"
+                    if self.selected_language == "English":
+                        call('clear' if os.name == 'posix' else 'cls')
+                        print(f"Port {port} is already in use. Trying the next port.")
+                    else:
+                        call('clear' if os.name == 'posix' else 'cls')
+                        print(f"포트 {port}는 이미 사용 중입니다. 다음 포트를 시도합니다.")
+
+                    port += 1
+                    loading_index = 0  # Reset loading messages
+            except KeyboardInterrupt:
+                # Handle Ctrl+C interruption to gracefully quit the web app
+                if self.selected_language == "English":
+                    print("\nWeb app stopped.")
+                    sleep(3)
+                else:
+                    print("\n웹 앱이 중지되었습니다.")
+                    sleep(3)
+
+                break
+
+            # Display loading message
+            call('clear' if os.name == 'posix' else 'cls')
+            print(loading_messages[loading_index % len(loading_messages)], end="\r")
+            sleep(3)
+
+    def desktopApp(self):
+        app = wx.App(False)
+        frame = MyWebApp(None, wx.ID_ANY, "GeoKorea Desktop App", size=(800, 600))
+        frame.Show()
+        app.MainLoop()
+
+if __name__ == "__main__":
+    game = GeoKorea()
+    call('clear' if os.name == 'posix' else 'cls')
+    game.handle_selection(curses.wrapper(game.run))
