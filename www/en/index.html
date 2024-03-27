@@ -2,10 +2,10 @@
 <html>
   <head>
     <title>GeoKorea</title>
-    <meta charset="utf-8">
+      <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <style>
+      <style>
       html, body {
         display: flex;
         justify-content: center;
@@ -133,44 +133,45 @@
       button:hover {
         background: #26a9e0;
       }
-      .change {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        padding: 6px 12px 6px 12px;
-        border: 1px solid black;
-        border-radius: 12px;
-      }
-      .change-text {
-        font-size: 32px;
-      }
+        .change {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          padding: 6px 12px 6px 12px;
+          border: 1px solid black;
+          border-radius: 12px;
+        }
+        .change-text {
+          font-size: 32px;
+        }
     </style>
-    <script>
-      console.log("테스트");
+      <script>
+          console.log("Test");
 
-      let test = 100;
 
-      test = test * 100.880 / 43245 ** 43;
+let test = 100;
 
-      console.log(test);
-    </script>
+test = test * 100.880 / 43245 ** 43;
+
+console.log(test)
+      </script>
   </head>
   <body>
     <div class="main-block">
-      <h1>지오한국!</h1>
+      <h1>GeoKorea!</h1>
       <form action="/">
         <hr>
-        <input type="text" id="name" placeholder="한국 (Korea)" required/>
+        <input type="text" id="name" placeholder="Korea (한국)" required/>
         <hr>
         <div class="btn-block">
-          <p>Hanna Skairipa와 Lucas Lu가 만듭니다.</p>
-          <button type="submit" href="/">추측</button>
+          <p>Created by Hanna Skairipa and Lucas Lu</p>
+          <button type="submit" href="/">Guess</button>
         </div>
       </form>
     </div>
 
     <div class="change">
-      <a href="/en"><p class="change-text">Switch to English</p></a>
+      <a href="/kr"><p class="change-text">한국어로 바꿔</p></a>
     </div>
   </body>
 </html>

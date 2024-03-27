@@ -229,7 +229,7 @@ class GeoKorea:
                     if self.selected_language == "English":
                         call('clear' if os.name == 'posix' else 'cls')
                         print(f"Server started at http://{address}:{port}")
-                        webbrowser.open(f"http://{address}:{port}")
+                        webbrowser.open(f"http://{address}:{port}/en")
                     else:
                         call('clear' if os.name == 'posix' else 'cls')
                         print(f"서버가 다음 주소에서 시작되었습니다: http://{address}:{port}")
@@ -270,7 +270,7 @@ class GeoKorea:
         tk.geometry("800x450")
 
         if self.selected_language == "English":
-            webview.create_window('GeoKorea!', 'https://pinkqween.github.io/GeoKorea/')
+            webview.create_window('GeoKorea!', 'https://pinkqween.github.io/GeoKorea/en')
         else:
             webview.create_window('GeoKorea!', 'https://pinkqween.github.io/GeoKorea/kr')
 

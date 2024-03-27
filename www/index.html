@@ -6,6 +6,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <style>
+      * {
+        user-select: none;
+      }
       html, body {
       display: flex;
       justify-content: center;
@@ -33,7 +36,7 @@
       opacity: 0.3;
       }
       .main-block {
-      max-width: 340px;
+      width: 260px;
       min-height: 160px;
       padding: 10px 0;
       margin: auto;
@@ -48,47 +51,9 @@
       .account-type, .gender {
       margin: 15px 0;
       }
-      input[type=radio] {
-      display: none;
-      }
       label#icon {
       margin: 0;
       border-radius: 5px 0 0 5px;
-      }
-      label.radio {
-      position: relative;
-      display: inline-block;
-      padding-top: 4px;
-      margin-right: 20px;
-      text-indent: 30px;
-      overflow: visible;
-      cursor: pointer;
-      }
-      label.radio:before {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #1c87c9;
-      }
-      label.radio:after {
-      content: "";
-      position: absolute;
-      width: 9px;
-      height: 4px;
-      top: 8px;
-      left: 4px;
-      border: 3px solid #fff;
-      border-top: none;
-      border-right: none;
-      transform: rotate(-45deg);
-      opacity: 0;
-      }
-      input[type=radio]:checked + label:after {
-      opacity: 1;
       }
       input[type=text], input[type=password] {
       width: calc(100% - 57px);
@@ -116,7 +81,7 @@
       text-align: center;
       }
       button {
-      width: 100%;
+      width: 80%;
       padding: 10px 0;
       margin: 10px auto;
       border-radius: 5px;
@@ -129,30 +94,62 @@
       button:hover {
       background: #26a9e0;
       }
-    </style>
-      <script>
-          console.log("Test");
-
-
-let test = 100;
-
-test = test * 100.880 / 43245 ** 43;
-
-console.log(test)
-      </script>
+      .input {
+        align-self: center;
+      }
+      </style>
   </head>
   <body>
-    <div class="main-block">
+    <div class="main-block" style="display:flex;flex-direction:column;">
       <h1>GeoKorea!</h1>
-      <form action="/">
-        <hr>
-        <input type="text" id="name" placeholder="Korea (한국)" required/>
-        <hr>
-        <div class="btn-block">
-          <p>Created by Hanna Skairipa and Lucas Lu</p>
-          <button type="submit" href="/">Guess</button>
-        </div>
-      </form>
+      
+      <div class="input">
+        <input name="language" type="radio" id="english" value="english" />
+        <label for="english">English</label>
+      </div>
+      <div class="input">
+        <input name="language" type="radio" id="korean" value="korean" />
+        <label for="korean">한국인</label>
+    </div>
+      
+      <button type="submit" onclick="submit()">Continue (계속하다)</button>
     </div>
   </body>
 </html>
+
+
+<script defer>
+  const lang = window.location.search.split('=')[1];
+
+  if (lang?.toLowerCase() == "english".toLowerCase() || lang?.toLowerCase() == "en".toLowerCase()) {
+      document.getElementById("english").cheked = true;
+  } else if (lang?.toLowerCase() == "korean".toLowerCase() || lang?.toLowerCase() == "kr".toLowerCase()) {
+    document.getElementById("korean").cheked = true;
+  } else {
+
+  }
+
+  const submit = () => {
+    const langs = document.getElementsByName("language");
+
+    let finalLang;
+    
+    for (const i in langs) {
+      if (langs[i].checked) {
+        finalLang = langs[i].value;
+      }
+    }
+
+    if (!finalLang) {
+      finalLang = "english";
+    }
+
+    console.log(finalLang)
+    
+    if (finalLang == "korean") {
+      window.location.href = "/kr";
+    } else {
+      window.location.href = "/en";
+    }
+  }
+</script>
